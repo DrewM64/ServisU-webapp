@@ -66,6 +66,20 @@ section {
     border: 1px solid black;
     border-radius: 25px;
     margin: 10px;
+    overflow: hidden;
+    padding: 15px;
+}
+
+img {
+    width: 180px;
+    border-radius: 10px;
+    float: left;
+    display: block;
+    margin-right: 20px;
+}
+
+.card div {
+    float: left;
 }
 
 /*--- footer styles ---*/
