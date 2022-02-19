@@ -9,23 +9,26 @@ and open the template in the editor.
         <title>ServisU | Login</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="styles/main.css">
     </head>
     <body>
         <header>
             <nav>
+                <a href="login.html">Login</a>
+                <a href="about.html">About Us</a>
                 <a href="#">Make an Order</a>
-                <a href="#">About Us</a>
-                <a href="#">Login</a>
+                <a href="index">Home</a>
             </nav>
             <h1>ServisU</h1>
         </header>
         <section>
             <h2>Login</h2>
             <form>
-                <label for="uname">Username:</label><br>
-                    <input type="text" id="uname" name="uname">
-                <label for="pword">Password:</label><br>
-                    <input type="text" id="pword" name="pword">
+                <label for="username">Username:</label><br>
+                    <input type="text" id="username" name="username" required>
+                    <br>
+                <label for="password">Password:</label><br>
+                    <input type="text" id="password" name="password" required>
                 <input type="submit" value="Submit">
             </form>
         </section>
