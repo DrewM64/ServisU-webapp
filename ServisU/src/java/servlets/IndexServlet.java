@@ -1,3 +1,5 @@
+package servlets;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -29,7 +31,7 @@ public class IndexServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String url = "/index.html";
+        String url = "/index.jsp";
         getServletContext().getRequestDispatcher(url)
                 .forward(request, response);
         }
