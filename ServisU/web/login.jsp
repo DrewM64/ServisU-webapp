@@ -24,13 +24,13 @@ and open the template in the editor.
         <c:import url="/include/header.jsp" />
         <section>
             <h2>Login</h2>
-            <p>${message}</p>
+            <p class="message">${message}</p>
             <form action="login" method="post">
                 <label for="username">Username:</label><br>
                     <input type="text" id="username" name="username" required>
                     <br>
                 <label for="password">Password:</label><br>
-                    <input type="text" id="password" name="password" required>
+                    <input type="password" id="password" name="password" required>
                 <input type="submit" value="Submit">
             </form>
         </section>

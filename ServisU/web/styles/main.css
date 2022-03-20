@@ -61,6 +61,10 @@ section {
     margin: 20px auto;
 }
 
+.message {
+    color: red;
+}
+
 /*index*/
 .card {
     border: 1px solid black;
@@ -70,7 +74,7 @@ section {
     padding: 15px;
 }
 
-img {
+.card img {
     width: 180px;
     border-radius: 10px;
     float: left;
@@ -85,7 +89,7 @@ img {
 /*--- footer styles ---*/
 
 footer {
-    font-size: .5em;
+    font-size: .75em;
     border-top: 1px solid black;
     padding: 5px 10px;
 }

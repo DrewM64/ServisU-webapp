@@ -11,9 +11,7 @@ import java.io.PrintWriter;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.*;
 import models.User;
 
 /**
@@ -73,13 +71,15 @@ public class LoginServlet extends HttpServlet {
         // get username from login.jsp
         String un = request.getParameter("username");
         String pw = request.getParameter("password");
+        
         // check if user exists in file (UesrIO.getUser != null)
         String path = sc.getRealPath("/WEB-INF/login_credentials.txt");
         User currentUser = UserIO.getUser(path, un);
+        
         // if no match, display message that things don't match
         if (currentUser == null) {
             // message: "user not found"
-            message = "User not found. Please re-enter information.";
+            message = "User not found. Please try again.";
             request.setAttribute("message", message);
             getServletContext().getRequestDispatcher(url)
                 .forward(request, response);
@@ -87,16 +87,26 @@ public class LoginServlet extends HttpServlet {
         else {
             // if user exists, check if password matches
             if (currentUser.getPassword().equals(pw)) {
-                // if match, create new user object, create session, add user to session
+                // if match, create new user object, 
+                User newUser = new User();
+                newUser.setUsername(currentUser.getUsername());
+                newUser.setPassword(currentUser.getPassword());
+                
+                // create session, 
+                HttpSession session = request.getSession();
+
+                // add user to session
+                session.setAttribute("user", newUser);
+                
                 //route to internal jsp page (successful login)
-                url = "/index.jsp";
+                url = "/welcome";
                 getServletContext().getRequestDispatcher(url)
                 .forward(request, response);
             }
             // if password not match, display invalid credentials message
             else {
                 // message: "password does not match file"
-                message = "Password does not match file. Please re-enter information.";
+                message = "Password does not match user. Please try again.";
             request.setAttribute("message", message);
             getServletContext().getRequestDispatcher(url)
                 .forward(request, response);
