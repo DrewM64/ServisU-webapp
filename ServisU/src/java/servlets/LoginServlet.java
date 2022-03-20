@@ -5,13 +5,16 @@
  */
 package servlets;
 
+import data.UserIO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import models.User;
 
 /**
  *
@@ -31,19 +34,9 @@ public class LoginServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet LoginServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet LoginServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+        String url = "/login.jsp";
+        getServletContext().getRequestDispatcher(url)
+                .forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -72,7 +65,45 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        
+        String url= "/login.jsp";
+        ServletContext sc = getServletContext();
+        String message;
+        
+        // get username from login.jsp
+        String un = request.getParameter("username");
+        String pw = request.getParameter("password");
+        // check if user exists in file (UesrIO.getUser != null)
+        String path = sc.getRealPath("/WEB-INF/login_credentials.txt");
+        User currentUser = UserIO.getUser(path, un);
+        // if no match, display message that things don't match
+        if (currentUser == null) {
+            // message: "user not found"
+            message = "User not found. Please re-enter information.";
+            request.setAttribute("message", message);
+            getServletContext().getRequestDispatcher(url)
+                .forward(request, response);
+        }
+        else {
+            // if user exists, check if password matches
+            if (currentUser.getPassword().equals(pw)) {
+                // if match, create new user object, create session, add user to session
+                //route to internal jsp page (successful login)
+                url = "/index.jsp";
+                getServletContext().getRequestDispatcher(url)
+                .forward(request, response);
+            }
+            // if password not match, display invalid credentials message
+            else {
+                // message: "password does not match file"
+                message = "Password does not match file. Please re-enter information.";
+            request.setAttribute("message", message);
+            getServletContext().getRequestDispatcher(url)
+                .forward(request, response);
+            }
+        
+        }
+        
     }
 
     /**

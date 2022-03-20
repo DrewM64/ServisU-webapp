@@ -24,6 +24,7 @@ and open the template in the editor.
         <c:import url="/include/header.jsp" />
         <section>
             <h2>Login</h2>
+            <p>${message}</p>
             <form action="login" method="post">
                 <label for="username">Username:</label><br>
                     <input type="text" id="username" name="username" required>
