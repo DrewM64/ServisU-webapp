@@ -21,23 +21,23 @@
         required fields and phone number being numbers handled on servlet
         Sends to AdminServlet with action "add"
         -->
-        <h1>Add Tech Support</h1>
-        <p><i>${message}</i></p>
-    <form action="admin" method="post">
+        <h1>Add User</h1>
+        <p class="message"><i>${message}</i></p>
+    <form action="user" method="post">
         <input type="hidden" name="action" value="add">        
-        <label>Email:</label>
-        <input type="email" name="email" value="${tech.email}" 
+        <label>Username:</label>
+        <input type="text" name="username" value="${user.username}" 
                required><br>
         <label>First Name:</label>
-        <input type="text" name="firstName" value="${tech.firstName}" 
+        <input type="text" name="firstName" value="${userfirstName}" 
                required><br>
         <label>Last Name:</label>
-        <input type="text" name="lastName" value="${tech.lastName}"  
+        <input type="text" name="lastName" value="${user.lastName}"  
                required><br>
-        <label>Phone Number:</label>
-        <input type="text" name="phoneNumber" value="${tech.phone}"  
+        <label>Create Password:</label>
+        <input type="text" name="password" value="${user.password}"  
                required><br>  
         <label>&nbsp;</label>
         <input type="submit" value="Submit">
     </form>
-    <c:import url="/includes/footer.jsp" />
+    <c:import url="/include/footer.jsp" />

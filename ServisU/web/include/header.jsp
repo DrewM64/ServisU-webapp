@@ -7,6 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <header>
             <nav>
+                <a href="user">Users</a>
                 <a href="login">Login</a>
                 <a href="about.html">About Us</a>
                 <a href="#">Make an Order</a>

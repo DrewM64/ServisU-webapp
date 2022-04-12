@@ -21,22 +21,22 @@
         Receives techSupport from AdminServlet to populate fields
         Sends to AdminServlet with action "edit"
         -->
-        <h1>Edit Tech Support</h1>
-        <p><i>${message}</i></p>
-    <form action="admin" method="post">
+        <h1>Edit User</h1>
+        <p class="message"><i>${message}</i></p>
+    <form action="user" method="post">
         <input type="hidden" name="action" value="edit">        
-        <label>Editing: ${tech.email}</label><br>
-        <input type="hidden" name="email" value="${tech.email}">
+        <label>Editing: ${user.username}</label><br>
+        <input type="hidden" name="username" value="${user.username}">
         <label>Set First Name:</label>
-        <input type="text" name="firstName" value="${tech.firstName}" 
+        <input type="text" name="firstName" value="${user.firstName}" 
                required><br>
         <label>Set Last Name:</label>
-        <input type="text" name="lastName" value="${tech.lastName}"  
+        <input type="text" name="lastName" value="${user.lastName}"  
                required><br>
-        <label>Set Phone Number:</label>
-        <input type="text" name="phoneNumber" value="${tech.phone}"  
+        <label>Set Password:</label>
+        <input type="text" name="password" value="${user.password}"  
                required><br>  
         <label>&nbsp;</label>
         <input type="submit" value="Submit">
     </form>
-    <c:import url="/includes/footer.jsp" />
+    <c:import url="/include/footer.jsp" />

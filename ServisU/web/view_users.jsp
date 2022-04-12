@@ -18,6 +18,10 @@
         <c:import url="/include/header.jsp" />
         <section>
             <h1>Users Table</h1>
+            <form name="viewButton" method="post" action="user">
+                <input type="hidden" name="action" value="view">
+                <input type="submit" value="Load Database">
+            </form>
             <table>
                 <tr>
                     <th colspan="5">Users</th>
@@ -36,7 +40,7 @@
                 Submitting editButton form sends that row's tech info to AdminServlet
                 to route it to edit_tech_support.jsp for editing
                 -->
-                <c:forEach var="user" items="${UserList}">
+                <c:forEach var="user" items="${userList}">
                     <tr>
                         <td>${user.username} </td>
                         <td>${user.password}</td>
@@ -52,8 +56,8 @@
                     </tr>
                 </c:forEach>
                 <tr>
-                    <td colspan="5"><a href="add_tech_support.jsp">Add New User</a></td>
+                    <td colspan="5"><a href="add_user.jsp">Add New User</a></td>
                 </tr>
             </table>
         </section>
-        <c:import url="/includes/footer.jsp" />
+        <c:import url="/include/footer.jsp" />

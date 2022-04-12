@@ -13,7 +13,7 @@ public class ConnectionPool {
     private ConnectionPool() {
         try {
             InitialContext ic = new InitialContext();
-            dataSource = (DataSource) ic.lookup("java:/comp/env/jdbc/User");
+            dataSource = (DataSource) ic.lookup("java:/comp/env/jdbc/user");
         } catch (NamingException e) {
             System.out.println(e);
         }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context path="/ServisU">
-    <Resource name="jdbc/User" auth="Container" 
+    <Resource name="jdbc/user" auth="Container" 
         driverClassName="com.mysql.jdbc.Driver" 
-        url="jdbc:mysql://localhost:3306/User" 
+        url="jdbc:mysql://localhost:3306/user" 
         username="root" password="password" 
         maxActive="100" maxIdle="30" maxWait="10000" 
         logAbandoned="true" removeAbandoned="true" 

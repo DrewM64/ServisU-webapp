@@ -113,13 +113,28 @@ public class UserDB {
     // TO DO: checks if password input contains at least 1 uppdercase character, 1 lowercase 
     // character, and a number, and is at least 8 characters long
     public static boolean validPass(String password) {
-        try {
-            int thisPass = Integer.parseInt(password);
-            return true;
-        } catch (NumberFormatException e) {
-            System.out.println(e);
-            return false;
+        char ch;
+        boolean lengthFlag = false;
+        boolean capitalFlag = false;
+        boolean lowerCaseFlag = false;
+        boolean numberFlag = false;
+        if (password.length()>=8){
+            lengthFlag = true;
         }
+        for(int i=0;i < password.length();i++) {
+            ch = password.charAt(i);
+            if( Character.isDigit(ch)) {
+                numberFlag = true;
+            }
+            else if (Character.isUpperCase(ch)) {
+                capitalFlag = true;
+            } else if (Character.isLowerCase(ch)) {
+                lowerCaseFlag = true;
+            }
+            if(lengthFlag && numberFlag && capitalFlag && lowerCaseFlag)
+                return true;
+        }
+    return false;
     }
 
     // Returns single User object from DB with specified email
