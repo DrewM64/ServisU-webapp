@@ -176,7 +176,7 @@ public class UserServlet extends HttpServlet {
                 request.setAttribute("user", user);
                 
             } else {
-                //hash password (optional) and update the selected user in database
+                //update the selected user in database
                 message = "";
                 url = "/view_users.jsp";
                 User updatedUser = new User(firstName, lastName, email, username, password);

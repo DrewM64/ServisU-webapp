@@ -46,7 +46,6 @@ public class UserDB {
         PreparedStatement ps = null;
 
         String query = "UPDATE User SET "
-                + "Email = ?, "
                 + "FirstName = ?, "
                 + "LastName = ?, "
                 + "Password = ?, "
