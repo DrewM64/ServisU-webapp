@@ -12,6 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import models.User;
+import data.UserDB;
 
 /**
  *
@@ -73,10 +74,44 @@ public class LoginServlet extends HttpServlet {
         String pw = request.getParameter("password");
         
         if (action.equals("logindb")) {
-            // check if user exists
+            // check if user exists on database
+            if (!UserDB.userExists(un)) {
             // if no match, message no match
+            message = "User not found. Please try again.";
+                request.setAttribute("message", message);
+                getServletContext().getRequestDispatcher(url)
+                    .forward(request, response);
+            } 
+            else {
             //if exists, check if password matches DB
+            User currentUser = UserDB.selectUser(un);
             // if password matches, create user, create session, add to session, send to welcome
+            if (currentUser.getPassword().equals(pw)) {
+                    // if match, create new user object, 
+                    User newUser = new User();
+                    newUser.setUsername(currentUser.getUsername());
+                    newUser.setPassword(currentUser.getPassword());
+
+                    // create session, 
+                    HttpSession session = request.getSession();
+
+                    // add user to session
+                    session.setAttribute("user", newUser);
+
+                    //route to internal jsp page (successful login)
+                    url = "/welcome";
+                    getServletContext().getRequestDispatcher(url)
+                    .forward(request, response);
+                }
+                // if password not match, display invalid credentials message
+                else {
+                    // message: "password does not match file"
+                    message = "Password does not match user. Please try again.";
+                request.setAttribute("message", message);
+                getServletContext().getRequestDispatcher(url)
+                    .forward(request, response);
+                }
+            }
         }
         else {
         
