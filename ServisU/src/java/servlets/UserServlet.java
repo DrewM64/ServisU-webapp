@@ -5,15 +5,18 @@
  */
 package servlets;
 
+import data.PasswordUtil;
 import data.UserDB;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.*;
+import javax.mail.MessagingException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import models.User;
+import util.MailUtilLocal;
 
 /**
  *
@@ -71,28 +74,64 @@ public class UserServlet extends HttpServlet {
             String lastName = request.getParameter("lastName");
             String username = request.getParameter("username");
             String password = request.getParameter("password");
+            String email = request.getParameter("email");
 
             // store data in User object
-            User user = new User(firstName, lastName, username, password);
+            User user = new User(firstName, lastName, email, username, password);
 
             // validate the parameters
             String message;
-            if (firstName == null || lastName == null || username == null || password == null ||
-                firstName.isEmpty() || lastName.isEmpty() || username.isEmpty() || password.isEmpty() ) {
-                message = "Please fill out all four text boxes.";
+            if (firstName == null || lastName == null || email == null || username == null || password == null ||
+                firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || username.isEmpty() || password.isEmpty() ) {
+                message = "Please fill out all text boxes.";
                 url = "/add_user.jsp";
             } else if (UserDB.userExists(username)){
                 message = "Username already in use.";
                 url = "/add_user.jsp";
-            } else if (!UserDB.validPass(password)) {
+            } else if (!PasswordUtil.validPass(password)) {
                 message = "Password must be greater than 8 characters, and include "
                         + "at least 1 uppercase letter, 1 lowercase letter, and 1 number.";
                 url = "/add_user.jsp";
             }
             else {
+                // user passes validation and can be added
                 message = "";
-                url = "/view_users.jsp";
                 UserDB.insert(user);
+                request.setAttribute("user", user);
+
+            // send email to user
+            String to = email;
+            String from = "email_list@murach.com";
+            String subject = "Welcome to our email list";
+            String body = "Dear " + firstName + ",\n\n"
+                    + "Thanks for joining our email list. We'll make sure to send "
+                    + "you announcements about new products and promotions.\n"
+                    + "Have a great day and thanks again!\n\n"
+                    + "Kelly Slivkoff\n"
+                    + "Mike Murach & Associates";
+            boolean isBodyHTML = false;
+
+            try {
+                MailUtilLocal.sendMail(to, from, subject, body, isBodyHTML);
+            } catch (MessagingException e) {
+                String errorMessage
+                        = "ERROR: Unable to send email. "
+                        + "Check Tomcat logs for details.<br>"
+                        + "NOTE: You may need to configure your system "
+                        + "as described in chapter 14.<br>"
+                        + "ERROR MESSAGE: " + e.getMessage();
+                request.setAttribute("errorMessage", errorMessage);
+                this.log(
+                        "Unable to send email. \n"
+                        + "Here is the email you tried to send: \n"
+                        + "=====================================\n"
+                        + "TO: " + email + "\n"
+                        + "FROM: " + from + "\n"
+                        + "SUBJECT: " + subject + "\n"
+                        + "\n"
+                        + body + "\n\n");
+            }
+            url = "/thanks.jsp";
             }
             
             ArrayList<User> userList = UserDB.selectUsers();
@@ -117,18 +156,19 @@ public class UserServlet extends HttpServlet {
             //requests parameters from edit_user.jsp
             String username = request.getParameter("username");
             String firstName = request.getParameter("firstName");
+            String email = request.getParameter("email");
             String lastName = request.getParameter("lastName");
             String password = request.getParameter("password");
             
             // validate no empty fields and that password is valid
-            if (firstName == null || lastName == null || password == null ||
-                firstName.isEmpty() || lastName.isEmpty() || password.isEmpty() ) {
+            if (firstName == null || lastName == null || email == null || username == null || password == null ||
+                firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || username.isEmpty() || password.isEmpty()) {
                 message = "Please fill out all three text boxes.";
                 url = "/edit_user.jsp";
                 User user = UserDB.selectUser(username);
                 request.setAttribute("user", user);
                 
-            } else if (!UserDB.validPass(password)) {
+            } else if (!PasswordUtil.validPass(password)) {
                 message = "Password must be greater than 8 characters, and include "
                         + "at least 1 uppercase letter, 1 lowercase letter, and 1 number.";
                 url = "/edit_user.jsp";
@@ -136,10 +176,10 @@ public class UserServlet extends HttpServlet {
                 request.setAttribute("user", user);
                 
             } else {
-                //update the selected user in database
+                //hash password (optional) and update the selected user in database
                 message = "";
                 url = "/view_users.jsp";
-                User updatedUser = new User(firstName, lastName, username, password);
+                User updatedUser = new User(firstName, lastName, email, username, password);
                 UserDB.update(updatedUser);
                 
             }

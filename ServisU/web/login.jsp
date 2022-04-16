@@ -26,6 +26,7 @@ and open the template in the editor.
             <h2>Login</h2>
             <p class="message">${message}</p>
             <form action="login" method="post">
+                <input type="hidden" name="action" value="logindb">
                 <label for="username">Username:</label><br>
                     <input type="text" id="username" name="username" required>
                     <br>

@@ -24,13 +24,14 @@
             </form>
             <table>
                 <tr>
-                    <th colspan="5">Users</th>
+                    <th colspan="6">Users</th>
                 </tr>
                 <tr>
                     <th>Username</th>
                     <th>Password</th>
                     <th>First Name</th>
                     <th>Last Name</th>
+                    <th>Email</th>
                     <th style="width: 1px"/>
                 </tr>
                
@@ -46,6 +47,7 @@
                         <td>${user.password}</td>
                         <td>${user.firstName}</td>
                         <td>${user.lastName}</td>
+                        <td>${user.email}</td>
                         <td>
                             <form name="editButton" method="post" action="user">
                                 <input type="hidden" name="action" value="editButton">
@@ -56,7 +58,7 @@
                     </tr>
                 </c:forEach>
                 <tr>
-                    <td colspan="5"><a href="add_user.jsp">Add New User</a></td>
+                    <td colspan="6"><a href="add_user.jsp">Add New User</a></td>
                 </tr>
             </table>
         </section>

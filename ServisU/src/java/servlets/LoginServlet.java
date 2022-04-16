@@ -64,6 +64,7 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         
         String url= "/login.jsp";
+        String action = request.getParameter("action");
         ServletContext sc = getServletContext();
         String message;
         
@@ -71,44 +72,53 @@ public class LoginServlet extends HttpServlet {
         String un = request.getParameter("username");
         String pw = request.getParameter("password");
         
-        // check if user exists in file (UesrIO.getUser != null)
-        String path = sc.getRealPath("/WEB-INF/login_credentials.txt");
-        User currentUser = UserIO.getUser(path, un);
-        
-        // if no match, display message that things don't match
-        if (currentUser == null) {
-            // message: "user not found"
-            message = "User not found. Please try again.";
-            request.setAttribute("message", message);
-            getServletContext().getRequestDispatcher(url)
-                .forward(request, response);
+        if (action.equals("logindb")) {
+            // check if user exists
+            // if no match, message no match
+            //if exists, check if password matches DB
+            // if password matches, create user, create session, add to session, send to welcome
         }
         else {
-            // if user exists, check if password matches
-            if (currentUser.getPassword().equals(pw)) {
-                // if match, create new user object, 
-                User newUser = new User();
-                newUser.setUsername(currentUser.getUsername());
-                newUser.setPassword(currentUser.getPassword());
-                
-                // create session, 
-                HttpSession session = request.getSession();
+        
+            // check if user exists in file (UesrIO.getUser != null)
+            String path = sc.getRealPath("/WEB-INF/login_credentials.txt");
+            User currentUser = UserIO.getUser(path, un);
 
-                // add user to session
-                session.setAttribute("user", newUser);
-                
-                //route to internal jsp page (successful login)
-                url = "/welcome";
+            // if no match, display message that things don't match
+            if (currentUser == null) {
+                // message: "user not found"
+                message = "User not found. Please try again.";
+                request.setAttribute("message", message);
                 getServletContext().getRequestDispatcher(url)
-                .forward(request, response);
+                    .forward(request, response);
             }
-            // if password not match, display invalid credentials message
             else {
-                // message: "password does not match file"
-                message = "Password does not match user. Please try again.";
-            request.setAttribute("message", message);
-            getServletContext().getRequestDispatcher(url)
-                .forward(request, response);
+                // if user exists, check if password matches
+                if (currentUser.getPassword().equals(pw)) {
+                    // if match, create new user object, 
+                    User newUser = new User();
+                    newUser.setUsername(currentUser.getUsername());
+                    newUser.setPassword(currentUser.getPassword());
+
+                    // create session, 
+                    HttpSession session = request.getSession();
+
+                    // add user to session
+                    session.setAttribute("user", newUser);
+
+                    //route to internal jsp page (successful login)
+                    url = "/welcome";
+                    getServletContext().getRequestDispatcher(url)
+                    .forward(request, response);
+                }
+                // if password not match, display invalid credentials message
+                else {
+                    // message: "password does not match file"
+                    message = "Password does not match user. Please try again.";
+                request.setAttribute("message", message);
+                getServletContext().getRequestDispatcher(url)
+                    .forward(request, response);
+                }
             }
         
         }

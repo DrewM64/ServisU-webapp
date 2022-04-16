@@ -27,6 +27,9 @@
         <input type="hidden" name="action" value="edit">        
         <label>Editing: ${user.username}</label><br>
         <input type="hidden" name="username" value="${user.username}">
+        <label>Set Email:</label>
+        <input type="email" name="email" value="${user.email}" 
+               required><br>
         <label>Set First Name:</label>
         <input type="text" name="firstName" value="${user.firstName}" 
                required><br>

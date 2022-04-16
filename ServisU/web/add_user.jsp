@@ -28,6 +28,9 @@
         <label>Username:</label>
         <input type="text" name="username" value="${user.username}" 
                required><br>
+        <label>Email:</label>
+        <input type="email" name="email" value="${user.email}" 
+               required><br>
         <label>First Name:</label>
         <input type="text" name="firstName" value="${userfirstName}" 
                required><br>

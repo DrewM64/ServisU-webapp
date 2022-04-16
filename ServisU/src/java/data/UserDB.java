@@ -21,14 +21,15 @@ public class UserDB {
         PreparedStatement ps = null;
 
         String query
-                = "INSERT INTO User (Username, Password, FirstName, LastName) "
-                + "VALUES (?, ?, ?, ?)";
+                = "INSERT INTO User (Username, Password, FirstName, LastName, Email) "
+                + "VALUES (?, ?, ?, ?, ?)";
         try {
             ps = connection.prepareStatement(query);
             ps.setString(1, user.getUsername());
             ps.setString(2, user.getPassword());
             ps.setString(3, user.getFirstName());
             ps.setString(4, user.getLastName());
+            ps.setString(5, user.getEmail());
             return ps.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
@@ -45,16 +46,19 @@ public class UserDB {
         PreparedStatement ps = null;
 
         String query = "UPDATE User SET "
+                + "Email = ?, "
                 + "FirstName = ?, "
                 + "LastName = ?, "
-                + "Password = ? "
+                + "Password = ?, "
+                + "Email = ? "
                 + "WHERE Username = ?";
         try {
             ps = connection.prepareStatement(query);
             ps.setString(1, user.getFirstName());
             ps.setString(2, user.getLastName());
             ps.setString(3, user.getPassword());
-            ps.setString(4, user.getUsername());
+            ps.setString(4, user.getEmail());
+            ps.setString(5, user.getUsername());
 
             return ps.executeUpdate();
         } catch (SQLException e) {
@@ -75,7 +79,7 @@ public class UserDB {
                 + "WHERE Username = ?";
         try {
             ps = connection.prepareStatement(query);
-            ps.setString(1, user.getEmail());
+            ps.setString(1, user.getUsername());
 
             return ps.executeUpdate();
         } catch (SQLException e) {
@@ -110,32 +114,7 @@ public class UserDB {
         }
     }
     
-    // TO DO: checks if password input contains at least 1 uppdercase character, 1 lowercase 
-    // character, and a number, and is at least 8 characters long
-    public static boolean validPass(String password) {
-        char ch;
-        boolean lengthFlag = false;
-        boolean capitalFlag = false;
-        boolean lowerCaseFlag = false;
-        boolean numberFlag = false;
-        if (password.length()>=8){
-            lengthFlag = true;
-        }
-        for(int i=0;i < password.length();i++) {
-            ch = password.charAt(i);
-            if( Character.isDigit(ch)) {
-                numberFlag = true;
-            }
-            else if (Character.isUpperCase(ch)) {
-                capitalFlag = true;
-            } else if (Character.isLowerCase(ch)) {
-                lowerCaseFlag = true;
-            }
-            if(lengthFlag && numberFlag && capitalFlag && lowerCaseFlag)
-                return true;
-        }
-    return false;
-    }
+    
 
     // Returns single User object from DB with specified email
     public static User selectUser(String username) {
@@ -157,6 +136,7 @@ public class UserDB {
                 user.setLastName(rs.getString("LastName"));
                 user.setPassword(rs.getString("Password"));
                 user.setUsername(rs.getString("Username"));
+                user.setEmail(rs.getString("Email"));
             }
             return user;
         } catch (SQLException e) {
@@ -187,6 +167,7 @@ public class UserDB {
                 u.setLastName(rs.getString("LastName"));
                 u.setPassword(rs.getString("Password"));
                 u.setUsername(rs.getString("Username"));
+                u.setEmail(rs.getString("Email"));
                 users.add(u);
             }
             return users;
